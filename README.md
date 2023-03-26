@@ -1,3 +1,3 @@
-## Crud Data Table
+## Deploy for Crud Data Table
 
-Deploy
+https://oxanacode.github.io/crud/
