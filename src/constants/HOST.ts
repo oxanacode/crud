@@ -4,10 +4,10 @@ export const BASE_PATH = '/ru/data/v3/testmethods/docs';
 
 export const AUTH = '/login';
 
-export const GET_DATA = '/get';
+export const GET_DATA = '/userdocs/get';
 
-export const UPDATE_DATA = '/get';
+export const CREATE_DATA = '/userdocs/create';
 
-export const DELETE_DATA = '/delete/';
+export const DELETE_DATA = '/userdocs/delete/';
 
-export const EDIT_DATA = '/set/';
+export const SET_DATA = '/userdocs/set/';
