@@ -1,3 +1,3 @@
-## Crud Data Table
+## ![](https://oxanacode.github.io/crud/favicon.ico) Crud Data Table
 
-Deploy
+Deploy https://oxanacode.github.io/crud/
