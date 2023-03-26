@@ -13,7 +13,7 @@ function App() {
   return (
     <>
       <CssBaseline />
-      <ToastContainer position="bottom-left" theme="colored" autoClose={3000} />
+      <ToastContainer position="bottom-center" theme="colored" autoClose={3000} />
       <BrowserRouter>
         <Routes>
           <Route

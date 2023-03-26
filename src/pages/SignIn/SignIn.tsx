@@ -1,3 +1,4 @@
+import Box from '@mui/joy/Box';
 import Sheet from '@mui/joy/Sheet';
 import Typography from '@mui/joy/Typography';
 import { useEffect } from 'react';
@@ -19,32 +20,42 @@ export const SignIn = () => {
   }, [auth, navigate]);
 
   return (
-    <main>
-      <Sheet
-        variant="outlined"
+    <Box component="main" sx={{ display: 'flex' }}>
+      <Box
         sx={{
           display: 'flex',
-          flexDirection: 'column',
-          gap: 2,
-          maxWidth: 320,
-          p: 2,
-          mx: 'auto',
-          mt: 20,
-          borderRadius: 'sm',
+          justifyContent: 'center',
+          alignItems: 'center',
+          minHeight: '100vh',
+          width: '100%',
+          py: 6,
         }}
       >
-        <div>
-          <Typography level="h4" component="h1" textAlign="center">
-            <b>Welcome!</b>
-          </Typography>
+        <Sheet
+          variant="outlined"
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 2,
+            width: '100%',
+            maxWidth: 300,
+            p: 2,
+            borderRadius: 'sm',
+          }}
+        >
+          <div>
+            <Typography level="h4" component="h1" textAlign="center">
+              <b>Welcome!</b>
+            </Typography>
 
-          <Typography level="body2" textAlign="center">
-            Sign in to continue
-          </Typography>
+            <Typography level="body2" textAlign="center">
+              Sign in to continue
+            </Typography>
 
-          <AuthForm />
-        </div>
-      </Sheet>
-    </main>
+            <AuthForm />
+          </div>
+        </Sheet>
+      </Box>
+    </Box>
   );
 };

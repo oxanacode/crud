@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 import { postAuthFormData } from '../../api/postAuthFormData';
+import { INFO_MESSAGE } from '../../constants/INFO_MESSAGE';
 import { LOCAL_STORAGE_KEYS } from '../../constants/LOCAL_STORAGE_KEYS';
 import { ROUTES } from '../../constants/ROUTES';
 
@@ -29,7 +30,7 @@ export const AuthForm = () => {
   const { isLoading, mutate: signIn } = useMutation({
     mutationFn: (formData: AuthFormData) => postAuthFormData(formData),
     onError: () => {
-      toast.error('Oops! Please try again later...');
+      toast.error(INFO_MESSAGE.WENT_WRONG);
     },
     onSuccess: (data) => {
       if (!data?.data.error_code) {

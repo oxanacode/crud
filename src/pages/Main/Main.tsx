@@ -1,8 +1,7 @@
+import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import Box from '@mui/joy/Box';
 import Button from '@mui/joy/Button';
-import LinearProgress from '@mui/joy/LinearProgress';
 import Sheet from '@mui/joy/Sheet';
-import Typography from '@mui/joy/Typography';
 import { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
 import { useNavigate } from 'react-router-dom';
@@ -10,6 +9,8 @@ import { useNavigate } from 'react-router-dom';
 import { getTableData } from '../../api/tableData';
 import { AddDataModal } from '../../components/AddDataModal';
 import { DataTable, DataTableType } from '../../components/DataTable';
+import { ErrorFullPage } from '../../components/ErrorFullPage';
+import { LoadingProgressFullPage } from '../../components/LoadingProgressFullPage';
 
 import { LOCAL_STORAGE_KEYS } from '../../constants/LOCAL_STORAGE_KEYS';
 import { ROUTES } from '../../constants/ROUTES';
@@ -35,35 +36,28 @@ export const Main = () => {
   };
 
   if (isLoading) {
-    return (
-      <div>
-        <Typography level="h6" component="h1" textAlign="center" sx={{ mt: 10, mb: 3 }}>
-          Data is loading...
-        </Typography>
-        <LinearProgress sx={{ maxWidth: 320 }} />
-      </div>
-    );
+    return <LoadingProgressFullPage />;
   }
 
   if (isError) {
-    return (
-      <div>
-        <Typography level="h6" component="h1" textAlign="center" sx={{ mt: 10, mb: 3 }}>
-          Oops! Something went wrong 😟 Please try again later...
-        </Typography>
-      </div>
-    );
+    return <ErrorFullPage />;
   }
 
   const tableData: DataTableType[] = !data.error_code ? data.data : [];
 
   return (
-    <Box component="main" sx={{ display: 'flex', flexDirection: 'column', maxWidth: '90%', mx: 'auto', mt: 4 }}>
-      <Button variant="outlined" color="neutral" onClick={handleClick} sx={{ ml: 'auto' }}>
+    <Box component="main" sx={{ display: 'flex', flexDirection: 'column', maxWidth: '90%', mx: 'auto', my: 4 }}>
+      <Button
+        variant="outlined"
+        color="neutral"
+        onClick={handleClick}
+        sx={{ ml: 'auto' }}
+        startDecorator={<AddRoundedIcon />}
+      >
         Add new data
       </Button>
       <Box sx={{ mt: 4, width: '100%' }}>
-        <Sheet variant="outlined" sx={{ py: 2, borderRadius: 'xs', maxWidth: '100%', overflowX: 'auto' }}>
+        <Sheet variant="outlined" sx={{ maxWidth: '100%', overflowX: 'auto', borderRadius: 'sm' }}>
           <DataTable tableData={tableData} setOpenModal={setOpenModal} setRowValue={setRowValue} />
         </Sheet>
       </Box>

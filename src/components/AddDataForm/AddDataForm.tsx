@@ -11,6 +11,7 @@ import { toast } from 'react-toastify';
 import { FormField } from './FormField';
 
 import { createTableRow, setTableRow } from '../../api/tableData';
+import { INFO_MESSAGE } from '../../constants/INFO_MESSAGE';
 import { LOCAL_STORAGE_KEYS } from '../../constants/LOCAL_STORAGE_KEYS';
 import { TABLE_COLUMNS, TableType, TABLE_COLUMNS_DATE } from '../../constants/TABLE_COLUMNS';
 import { DataTableType } from '../DataTable';
@@ -35,9 +36,13 @@ export const AddDataForm = ({ setOpenModal, value }: AddDataFormProps) => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['tableData'] });
+
+      setOpenModal(false);
+      toast.success(INFO_MESSAGE.DATA_CHANGE);
     },
     onError: () => {
-      toast.error('Oops! Something went wrong...');
+      setOpenModal(false);
+      toast.error(INFO_MESSAGE.WENT_WRONG);
     },
   });
 
@@ -47,8 +52,6 @@ export const AddDataForm = ({ setOpenModal, value }: AddDataFormProps) => {
     });
 
     mutation.mutate(formData);
-
-    setOpenModal(false);
   };
 
   return (
@@ -66,7 +69,7 @@ export const AddDataForm = ({ setOpenModal, value }: AddDataFormProps) => {
             />
           ))}
         </Grid>
-        <Button type="submit" disabled={!isDirty || !isValid}>
+        <Button type="submit" disabled={!isDirty || !isValid} loading={mutation.isLoading} loadingPosition="end">
           Submit
         </Button>
       </Stack>

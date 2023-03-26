@@ -29,7 +29,7 @@ export const AddDataModal = ({ isOpen, setOpenModal, value }: AddDataModalProps)
         <ModalClose />
 
         <Typography id="add-new-data-modal-title" component="h2">
-          Add new data
+          {value.id ? 'Edit data' : 'Add new data'}
         </Typography>
 
         <Typography id="basic-modal-dialog-description" textColor="text.tertiary" sx={{ mb: 2 }}>

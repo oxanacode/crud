@@ -1,6 +1,9 @@
+import ClearRoundedIcon from '@mui/icons-material/ClearRounded';
+import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import Box from '@mui/joy/Box';
 import Button from '@mui/joy/Button';
 import Divider from '@mui/joy/Divider';
+import IconButton from '@mui/joy/IconButton';
 import Modal from '@mui/joy/Modal';
 import ModalDialog from '@mui/joy/ModalDialog';
 import Sheet from '@mui/joy/Sheet';
@@ -11,6 +14,7 @@ import { useMutation, useQueryClient } from 'react-query';
 import { toast } from 'react-toastify';
 
 import { deleteTableRow } from '../../api/tableData';
+import { INFO_MESSAGE } from '../../constants/INFO_MESSAGE';
 import { LOCAL_STORAGE_KEYS } from '../../constants/LOCAL_STORAGE_KEYS';
 
 import { TableType, TABLE_COLUMNS, TABLE_COLUMNS_DATE } from '../../constants/TABLE_COLUMNS';
@@ -39,13 +43,16 @@ export const DataTable = ({ tableData, setRowValue, setOpenModal }: DataTablePro
   const [openConfirmation, setOpenConfirmation] = useState(false);
   const [deleteId, setDeleteId] = useState<string | null>(null);
 
-  const mutation = useMutation({
+  const { mutate: deleteRow, isLoading } = useMutation({
     mutationFn: (id: string) => deleteTableRow(id, accessToken),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['tableData'] });
+      setOpenConfirmation(false);
+      toast.success(INFO_MESSAGE.DATA_CHANGE);
     },
     onError: () => {
-      toast.error('Oops! Something went wrong...');
+      setOpenConfirmation(false);
+      toast.error(INFO_MESSAGE.WENT_WRONG);
     },
   });
 
@@ -69,10 +76,8 @@ export const DataTable = ({ tableData, setRowValue, setOpenModal }: DataTablePro
 
   const handleConfirmationClick = () => {
     if (deleteId) {
-      mutation.mutate(deleteId);
+      deleteRow(deleteId);
     }
-
-    setOpenConfirmation(false);
   };
 
   const handleCancelClick = () => {
@@ -82,13 +87,29 @@ export const DataTable = ({ tableData, setRowValue, setOpenModal }: DataTablePro
 
   return (
     <Sheet sx={{ minWidth: 1200 }}>
-      <Table stickyHeader hoverRow stripe="odd">
+      <Table
+        stickyHeader
+        borderAxis="bothBetween"
+        hoverRow
+        stripe="odd"
+        sx={{
+          textAlign: 'center',
+          '& tr > *:last-child': {
+            position: 'sticky',
+            right: 0,
+            width: 100,
+            bgcolor: 'var(--TableCell-headBackground)',
+          },
+        }}
+      >
         <thead>
           <tr>
             {TABLE_COLUMNS.map((column) => (
-              <th key={column}>{column}</th>
+              <th key={column} style={{ textTransform: 'capitalize', textAlign: 'center' }}>
+                {column}
+              </th>
             ))}
-            <th></th>
+            <th style={{ textAlign: 'center' }}>Action</th>
           </tr>
         </thead>
         <tbody>
@@ -100,13 +121,25 @@ export const DataTable = ({ tableData, setRowValue, setOpenModal }: DataTablePro
                 }`}</td>
               ))}
               <td>
-                <Box sx={{ display: 'flex', gap: 1 }}>
-                  <Button size="sm" variant="plain" color="neutral" onClick={() => handleEditClick(row)}>
-                    Edit
-                  </Button>
-                  <Button size="sm" variant="soft" color="danger" onClick={() => handleDeleteClick(row.id)}>
-                    Delete
-                  </Button>
+                <Box sx={{ display: 'flex', gap: 1, justifyContent: 'center' }}>
+                  <IconButton
+                    aria-label="Edit row"
+                    size="sm"
+                    variant="outlined"
+                    color="neutral"
+                    onClick={() => handleEditClick(row)}
+                  >
+                    <EditRoundedIcon />
+                  </IconButton>
+                  <IconButton
+                    aria-label="Delete row"
+                    size="sm"
+                    variant="outlined"
+                    color="neutral"
+                    onClick={() => handleDeleteClick(row.id)}
+                  >
+                    <ClearRoundedIcon color="error" />
+                  </IconButton>
                 </Box>
               </td>
             </tr>
@@ -124,14 +157,20 @@ export const DataTable = ({ tableData, setRowValue, setOpenModal }: DataTablePro
             Confirmation
           </Typography>
           <Divider sx={{ my: 2 }} />
-          <Typography id="alert--modal-description" textColor="text.tertiary" mb={3}>
+          <Typography id="alert-modal-description" textColor="text.tertiary" mb={3}>
             Are you sure you want to delete this data?
           </Typography>
           <Box sx={{ display: 'flex', gap: 1, justifyContent: 'flex-end' }}>
             <Button variant="plain" color="neutral" onClick={handleCancelClick}>
               Cancel
             </Button>
-            <Button variant="solid" color="danger" onClick={handleConfirmationClick}>
+            <Button
+              variant="solid"
+              color="danger"
+              onClick={handleConfirmationClick}
+              loading={isLoading}
+              loadingPosition="end"
+            >
               Delete
             </Button>
           </Box>
