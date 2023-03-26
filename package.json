@@ -38,6 +38,7 @@
       "react-app/jest"
     ]
   },
+  "homepage": "https://oxanacode.github.io/crud",
   "browserslist": {
     "production": [
       ">0.2%",
