@@ -1,6 +1,6 @@
 import './App.css';
 import CssBaseline from '@mui/joy/CssBaseline';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { HashRouter as Router, Route, Routes } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 
 import { PrivateRoute } from './components/PrivateRoute';
@@ -14,7 +14,7 @@ function App() {
     <>
       <CssBaseline />
       <ToastContainer position="bottom-center" theme="colored" autoClose={3000} />
-      <BrowserRouter>
+      <Router>
         <Routes>
           <Route
             path={ROUTES.ROOT.path}
@@ -35,7 +35,7 @@ function App() {
           <Route path={ROUTES.SIGN_IN.path} element={<SignIn />} />
           <Route path={ROUTES.ALL.path} element={<NotFound />} />
         </Routes>
-      </BrowserRouter>
+      </Router>
     </>
   );
 }
